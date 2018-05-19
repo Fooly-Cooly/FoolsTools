@@ -1,0 +1,36 @@
+MOVE [options] [Source] [Target]
+	options:
+	/Y	Suppress confirmation prompt, when overwriting files.
+	/-Y	Enable confirmation prompt, when overwriting files.
+
+XCOPY [options] [Source] [Target]
+	options:
+	/A Only copy archive files found in source. Can't use /A and /M together.
+	/B Copy the symbolic link itself instead of the target.
+	/C Forces xcopy to continue even if there's an error.
+	/D MM-DD-YYYY, Copy files changed on or after that date.
+	/e = When used alone or with /s, this option is the same as /s but will also create empty folders in destination that were also empty in source. The /e option can also be used together with the /t option to include empty directories and subdirectories found in source in the directory structure created in destination.
+	/f = This option will display the full path and file name of both the source and destination files being copied.
+	/g = Using the xcopy command with this option allows you to copy encrypted files in source to a destination that does not support encryption. This option will not work when copying files from an EFS encrypted drive to a non-EFS encrypted drive.
+	/h = The xcopy command does not copy hidden files or system files by default but will when using this option.
+	/i = Use the /i option to force xcopy to assume that destination is a directory. If you don't use this option, and you're copying from source that is a directory or group of files and copying to destination that doesn't exist, the xcopy command will prompt you enter whether destination is a file or directory.
+	/j = This option copies files without buffering, a feature useful for very big files. This xcopy command option was first available in Windows 7.
+	/k = Use this option when copying read-only files to retain that file attribute in destination.
+	/l = Use this option to show a list of the files and folders to copied... but no copying is actually done. The /l option is useful if you're building a complicated xcopy command with several options and you'd like to see how it would function hypothetically.
+	/m = This option is identical to the /a option but the xcopy command will turn off the archive attribute after copying the file. You can not use /m and /a together.
+	/n = This option creates files and folders in destination using short file names. This option is only useful when you're using the xcopy command to copy files to a destination that exists on an drive formatted to an older file system like FAT that does not support long file names.
+	/o = Retains ownership and Access Control List (ACL) information in the files written in destination.
+	/p = When using this option, you'll be prompted before the creation of each file in destination.
+	/q = A kind of opposite of the /f option, the /q switch will put xcopy into "quiet" mode, skipping the on-screen display of each file being copied.
+	/r = Use this option to overwrite read-only files in destination. If you don't use this option when you want to overwrite a read-only file in destination, you'll be prompted with an "Access denied" message and the xcopy command will stop running.
+	/s = Use this option to copy directories, subdirectories, and the files contained within them, in addition to the files in the root of source. Empty folders will not be recreated.
+	/t = This option forces the xcopy command to create a directory structure in destination but not to copy any of the files. In other words, the folders and subfolders found in source will be created but there we be no files. Empty folders will not be created.
+	/u = This option will only copy files in source that are already in destination.
+	/v = This option verifies each file as its written, based on its size, to make sure they're identical. Verification was built in to the xcopy command beginning in Windows XP so this option does nothing in later versions of Windows and is only included for compatibility with older MS-DOS files.
+	/w = Use the /w option to present a "Press any key when ready to being copying file(s)" message. The xcopy command will begin copying files as instructed after you confirm with a key press. This option is not the same as the /p option which asks for verification before each file copy.
+	/x = This option copies file audit settings and System Access Control List (SACL) information. You imply /o when you use the /x option.
+	/y = Use this option to stop the xcopy command from prompting you about overwriting files from source that already exist in destination.
+	/-y = Use this option to force the xcopy command to prompt you about overwriting files. This might seem a strange option to exist since this is the default behavior of xcopy but the /y option may be preset in the COPYCMD environment variable on some computers, making this option necessary.
+	/z = This option allows the xcopy command to safely stop copying files when a network connection is lost and then resume copying from where it left off once the connection is reestablished. This option also shows the percentage copied for each file during the copy process.
+	/exclude:file1[+file2][+file3]... = This option allows you to specify one or more file names containing a list of search strings you want the xcopy command to to use to determine files and/or folders to skip when copying.
+	/? = Use the help switch with the xcopy command to show detailed help about the command. Executing xcopy /? is the same as using the help command to execute help 

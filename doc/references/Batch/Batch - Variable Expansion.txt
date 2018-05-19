@@ -1,0 +1,19 @@
+Environmental Variable Manipulation Examples
+--------------------------------------------
+%~1	- expands %1 removing any surrounding quotes (")
+%~f1	- expands %1 to a fully qualified path name
+%~d1	- expands %1 to a drive letter only
+%~p1	- expands %1 to a path only
+%~n1	- expands %1 to a file name only
+%~x1	- expands %1 to a file extension only
+%~s1	- expands %1 to contain short names only
+%~a1	- expands %1 to file attributes of file
+%~t1	- expands %1 to date/time of file
+%~z1	- expands %1 to size of file
+
+The modifiers can be combined to get compound results:
+%~dp1	- expands %1 to a drive letter and path only
+%~nx1	- expands %1 to a file name and extension only
+%~fs1	- expands %1 to a full path name with short names only
+
+%I:~0,-1% - removes the end character from string
