@@ -1,23 +1,26 @@
 @ECHO OFF
-SETLOCAL EnableExtensions DisableDelayedExpansion
+SETLOCAL EnableExtensions EnableDelayedExpansion
 	IF NOT "%~3" == "" (
-		ECHO.
-		SET "EXT=%~1"
-		SET "FLG=%~2"
-		SET "TAR=%~3"
-		CALL "%~dp0getArch" ARC
-		CALL "%~dp0getRegVal" RAR "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\WinRAR archiver" InstallLocation
-		GOTO :NEXT
-
-		:NEXT
-		SETLOCAL EnableDelayedExpansion
-			SET "TYP=%EXT:cb7=7z%"
+			ECHO.
+			SET "EXT=%~1"
+			SET "FLG=%~2"
+			SET "TAR=%~3"
+			CALL "%~dp0getArch" ARC
+			CALL "%~dp0getRegVal" RAR "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\WinRAR archiver" InstallLocation	
+			SET "TYP=!EXT:cb7=7z!"
 			SET "TYP=!TYP:cbr=rar!"
 			SET "TYP=!TYP:gz=gzip!"
 			SET "TYP=!TYP:bz2=bzip2!"
-			IF NOT "%TAR:~0,2%" == "/" IF NOT "!FLG:%TAR:~1%=!" == "!FLG!" (
-				CALL :%TAR:~1%
-			) ELSE CALL :PROCESS "!TAR!" "!TAR!"
+			SET "CHK=!FLG:%TAR:~1%=!"
+			SETLOCAL DisableDelayedExpansion
+		GOTO :NEXT
+		
+		:NEXT
+		IF NOT "%CHK%" == "%FLG%" IF NOT "%TAR:~0,2%" == "/" (
+			CALL :%TAR:~1%
+		) ELSE (
+			CALL :PROCESS "%TAR%" "%TAR%"
+		)
 		PAUSE & GOTO :END
 	)
 
@@ -38,8 +41,8 @@ SETLOCAL EnableExtensions DisableDelayedExpansion
 			IF "%TYP%" == "rar" (
 				"%RAR%rar" a -r -s -ep1 -m5 "%~1.%EXT%" %2
 			) ELSE (
-				IF %ARC% == x86 %~dp07za a -mx9 -t%TYP% "%~1.%EXT%" %2
-				IF %ARC% == x64 %~dp07za64 a -mx9 -t%TYP% "%~1.%EXT%" %2
+				IF %ARC% == x86 7za a -mx9 -t%TYP% "%~1.%EXT%" %2
+				IF %ARC% == x64 7za64 a -mx9 -t%TYP% "%~1.%EXT%" %2
 			)
 		) ELSE ECHO Error: "%~2" Not Found
 	GOTO :EOF
@@ -58,7 +61,6 @@ SETLOCAL EnableExtensions DisableDelayedExpansion
 	GOTO :EOF
 
 	:S
-
 	IF NOT "%~x5" == ".exe" ECHO Error: Incorrect Title or File Given & GOTO :END
 	CALL :PROCESS "temp" "%~5"
 	ECHO Creating Installer...
@@ -71,6 +73,7 @@ SETLOCAL EnableExtensions DisableDelayedExpansion
 		COPY /B "%~dp0..\..\bin\7zS.sfx" + "config.txt" + "temp.7z" "%~n5.new.exe"
 		DEL /Q "temp.7z"
 		DEL /Q "config.txt"
+	GOTO :EOF
 
 :END
 ENDLOCAL

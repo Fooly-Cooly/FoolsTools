@@ -24,7 +24,7 @@ SETLOCAL EnableExtensions EnableDelayedExpansion
 			ECHO.
 			IF %ARC% == x86 %~dp0bin\webp\cwebp.exe "%~1" -q 100 -lossless -o "%~dpn1.webp"
 			IF %ARC% == x64 %~dp0bin\webp64\cwebp.exe "%~1" -q 100 -lossless -o "%~dpn1.webp"
-			IF "%~2" == "-r" recycle "%~dpnx1"
+			IF "%~2" == "-r" nircmd moverecyclebin "%~dpnx1"
 		) ELSE ECHO Error: 404 File Not Found
 	GOTO :EOF
 

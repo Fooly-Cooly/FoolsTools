@@ -1,0 +1,1 @@
+ComObjCreate("SAPI.SpVoice").Speak("")

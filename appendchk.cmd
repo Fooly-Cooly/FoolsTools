@@ -1,10 +1,19 @@
 @ECHO OFF
 SETLOCAL EnableExtensions EnableDelayedExpansion
-	SET "LIST=;CRC32;MD5;"
-	IF NOT "!LIST:;%~1;=!" == "!LIST!" IF NOT "%~2" == "" (
+	IF NOT "%~2" == "" (
 		SET "EXE=%~1"
 		SET "PAR=%~2"
-		IF "!PAR:~0,1!" == "/" ( CALL :!PAR:~1! ) ELSE ( CALL :PROCESS "%~2" )
+		SET "LIST=;CRC32;MD5;"
+		SET "CHK=!LIST:;%~1;=!"
+		SETLOCAL DisableDelayedExpansion
+		GOTO :CALL
+		
+		:CALL
+		IF NOT "%CHK%" == "%LIST%" IF "%PAR:~0,1%" == "/" (
+			CALL :%PAR:~1%
+		) ELSE (
+			CALL :PROCESS "%~2"
+		)
 		PAUSE & GOTO :END
 	)
 
@@ -18,22 +27,24 @@ SETLOCAL EnableExtensions EnableDelayedExpansion
 	GOTO :END
 
 	:PROCESS
-		IF EXIST "%~1" (
-			ECHO File: "%~1"
+		IF EXIST "%~n1%~x1" (
+			ECHO File: "%~n1%~x1"
 			ECHO Calculating Checksum...
-			FOR /F  %%B IN ('%EXE% "%~1"') DO (
-				SET "NAM=%~n1"
-				SET "EXT=%~x1"
-				SET "CRC=%%B"
-				SET "CHK=!NAM:~-1!"
-
-				IF "!CHK!" == "]" ( SET "SPC=" ) ELSE ( SET "SPC= " )
-				RENAME "!NAM!!EXT!" "!NAM!!SPC![!CRC!]!EXT!"
-
-				ECHO [!CRC!] Appended to Filename
-				ECHO.
+			FOR /F %%B IN ('%EXE% "%~n1%~x1"') DO (
+				SETLOCAL EnableDelayedExpansion
+					SET "NAM=%~n1"
+					SET "CHK=!NAM:~-1!"
+					SET "SUM=%%B"
+					IF "!CHK!" == "]" ( SET "SPC=" ) ELSE ( SET "SPC= " )
+					GOTO :PROCESS_CONTINUE
 			)
-		) ELSE ECHO Error: %~1 Not Found
+
+			:PROCESS_CONTINUE
+			RENAME "%~n1%~x1" "%~n1%SPC%[%SUM%]%~x1"
+			ECHO [%SUM%] Appended to Filename
+			ENDLOCAL
+			ECHO.
+		) ELSE ECHO Error: %~n1%~x1 Not Found
 	GOTO :EOF
 
 	:A
@@ -42,7 +53,7 @@ SETLOCAL EnableExtensions EnableDelayedExpansion
 		SET /P "IN=Continue? (Y/N)"
 		ECHO.
 		IF NOT "%IN%" == "Y" GOTO :END
-		FOR /F "delims=" %%A IN ('DIR /A-D /B') DO CALL :PROCESS "%%~nxA"
+		FOR %%A IN (*) DO CALL :PROCESS "%%~nxA"
 	GOTO :EOF
 
 :END

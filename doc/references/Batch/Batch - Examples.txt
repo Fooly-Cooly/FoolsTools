@@ -1,0 +1,2 @@
+For loop that only lists files or folders with specified attributes.
+	Example: FOR /F "delims=" %%A IN ('DIR /A-D /B') DO ( ECHO %%A )
