@@ -1,12 +1,18 @@
 @ECHO OFF
-SETLOCAL EnableExtensions EnableDelayedExpansion
-	IF NOT "%~1" == "" (
-		SET "PAR=%~1"
-		CALL "%~dp0lib\getArch" ARC
-		IF "!PAR:~0,1!" == "/" GOTO :!PAR:~1!
-		CALL :PROCESS "%~1"
-		GOTO :PAUSE
+SETLOCAL EnableExtensions DisableDelayedExpansion
+	IF "%~1" == "" ( GOTO :SYNTAX )
+	SET "PAR1=%~1"
+	SET "PAR2=%~2"
+	CALL "%~dp0lib\getArch" ARC
+
+	IF "%PAR1:~0,1%" == "/" (
+		ECHO.AR | FIND "%PAR1:~1%">NUL && ( CALL :%PAR1:~1% ) || ( GOTO :SYNTAX )
+	) ELSE (
+		CALL :PROCESS "%PAR1%"
 	)
+	PAUSE & GOTO :END
+
+	:SYNTAX
 	ECHO.
 	ECHO Syntax: %~nx0 [[Options] Filename]
 	ECHO    [Default : Convert File]
@@ -20,24 +26,25 @@ SETLOCAL EnableExtensions EnableDelayedExpansion
 	GOTO :END
 
 	:PROCESS
-		IF EXIST "%~1" (
-			ECHO.
-			IF %ARC% == x86 %~dp0bin\webp\cwebp.exe "%~1" -q 100 -lossless -o "%~dpn1.webp"
-			IF %ARC% == x64 %~dp0bin\webp64\cwebp.exe "%~1" -q 100 -lossless -o "%~dpn1.webp"
-			IF "%~2" == "-r" nircmd moverecyclebin "%~dpnx1"
-		) ELSE ECHO Error: 404 File Not Found
+		IF NOT EXIST "%~1" ECHO ERROR: 404 File Not Found & GOTO :EOF
+		IF EXIST "%~dpn1.webp" ECHO ERROR: 422 File Already Exists, Skipping... & GOTO :EOF
+		ECHO.
+
+		RENAME "%~f1" "tmp%~x1"
+		START "cwebp" /W /B %~dp0bin\webp%ARC%\cwebp.exe "%~dp1tmp%~x1" -q 100 -lossless -o "%~dp1tmp.webp"
+		RENAME "%~dp1tmp%~x1" "%~nx1" 
+		RENAME "%~dp1tmp.webp" "%~n1.webp"
+
+		IF "%PAR2%" == "-r" nircmd moverecyclebin "%~f1"
 	GOTO :EOF
 
 	:A
-		FOR %%A IN ("*.png", "*.bmp") DO CALL :PROCESS "%%A" "%~2"
-	GOTO :PAUSE
+		FOR %%A IN ("*.png", "*.bmp") DO CALL :PROCESS "%%A"
+	GOTO :EOF
 
 	:R
-		FOR /R %%A IN ("*.png", "*.bmp") DO CALL :PROCESS "%%A" "%~2"
-	GOTO :PAUSE
-
-	:PAUSE
-		PAUSE
+		FOR /R %%A IN ("*.png", "*.bmp") DO CALL :PROCESS "%%A"
+	GOTO :EOF
 
 :END
 ENDLOCAL

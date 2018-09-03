@@ -1,2 +1,13 @@
-For loop that only lists files or folders with specified attributes.
-	Example: FOR /F "delims=" %%A IN ('DIR /A-D /B') DO ( ECHO %%A )
+--For loop that only lists files or folders with specified attributes.
+	FOR /F "delims=" %%A IN ('DIR /A-D /B') DO ( ECHO %%A )
+
+--Checking a variable against a list
+Example 1:
+	SETLOCAL EnableDelayedExpansion
+		SET "LIST=;FOO;BAR;"
+		SET "CHK=!LIST:;%~1;=!"
+		IF NOT "%CHK%" == "%LIST%" ( ECHO FOUND ) ELSE ( ECHO NOT FOUND )
+	ENDLOCAL
+	
+Example 2:
+	ECHO.FOO | FIND "BAR">NUL && ( ECHO FOUND ) || ( ECHO NOT FOUND )
