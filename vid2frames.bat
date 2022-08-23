@@ -1,0 +1,1 @@
+ffmpeg -ss 00:00:10 -i "%~1" -vframes 1 -q:v 2 "%~n1.jpg"

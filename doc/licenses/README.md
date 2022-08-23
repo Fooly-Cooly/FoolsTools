@@ -8,6 +8,7 @@ Program - License
 * crc32 	- MIT
 * gif2apng	- zlib
 * md5   	- MIT
+* maxcso	- ISC
 * NirCMD	- Custom
 * recycle	- GPLv2
 * webp  	- Custom

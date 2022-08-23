@@ -1,2 +1,2 @@
 @ECHO OFF
-%~dp0/lib/archive.cmd cb7 AFIS %*
+"%~dp0/lib/archive.cmd" cb7 AFI %*

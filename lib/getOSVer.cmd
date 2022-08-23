@@ -11,8 +11,5 @@ REM ==================================================================
 SETLOCAL EnableExtensions DisableDelayedExpansion
 	IF "%~1"=="" ECHO Error: No Output Variable Given & GOTO :EOF
 	IF NOT "%OS%"=="Windows_NT" ECHO Error: Unsupported OS & GOTO :EOF
-
 	FOR /F "tokens=4,5,6 delims=[].XP " %%A IN ('ver') DO SET "RETURN=%%A.%%B"
-
-:END
 ENDLOCAL & SET "%~1=%RETURN%"

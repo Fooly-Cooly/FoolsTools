@@ -1,6 +1,6 @@
 @ECHO OFF & ECHO.
 SETLOCAL EnableExtensions DisableDelayedExpansion
-	ECHO.;CRC32;MD5; | FIND /I ";%~1;">NUL && ( CALL ) || ( GOTO :SYNTAX )
+	ECHO.;CRC32;MD5;xxhsum; | FIND /I ";%~1;">NUL && ( CALL ) || ( GOTO :SYNTAX )
 	IF "%~2" == "" ( GOTO :SYNTAX )
 
 	SET "EXE=%~1"
@@ -15,8 +15,8 @@ SETLOCAL EnableExtensions DisableDelayedExpansion
 	PAUSE & GOTO :END
 
 	:SYNTAX
-	ECHO Syntax: %~nx0 [CRC32/MD5] [File/Switch]
-	ECHO    [/A : Append to All Files In CD]
+	ECHO Syntax: %~nx0 [CRC32/MD5/xxhsum] [File/Switch]
+	ECHO    [/A : Save Hash of All Files In CD]
 	ECHO    [Default : Append to Specific File]
 	ECHO.
 	ECHO Copyright (C) 2017  Brian Baker https://github.com/Fooly-Cooly
@@ -33,11 +33,8 @@ SETLOCAL EnableExtensions DisableDelayedExpansion
 				GOTO :PROCESS_CONTINUE
 			)
 			:PROCESS_CONTINUE
-			SET "NAM=%~n1"
-			SET "CHK=%NAM:~-1%"
-			IF "%CHK%" == "]" ( SET "SPC=" ) ELSE ( SET "SPC= " )
-			RENAME "%~n1%~x1" "%~n1%SPC%[%SUM%]%~x1"
-			ECHO [%SUM%] Appended to Filename
+			ECHO %SUM% > %~n1.%EXE%
+			ECHO %SUM% Saved to File
 			ECHO.
 		) ELSE ECHO Error: %~n1%~x1 Not Found
 	GOTO :EOF

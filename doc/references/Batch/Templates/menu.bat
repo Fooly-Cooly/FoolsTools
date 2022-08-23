@@ -1,16 +1,15 @@
 @ECHO OFF
 REM.-- Prepare the Command Processor
-SETLOCAL ENABLEEXTENSIONS
-SETLOCAL ENABLEDELAYEDEXPANSION
+SETLOCAL ENABLEEXTENSIONS ENABLEDELAYEDEXPANSION
 
 :menuLOOP
-echo.
-echo.= Menu =================================================
-echo.
-for /f "tokens=1,2,* delims=_ " %%A in ('"findstr /b /c:":menu_" "%~f0""') do echo.  %%B  %%C
-set choice=
-echo.&set /p choice=Make a choice or hit ENTER to quit: ||GOTO:EOF
-echo.&call:menu_%choice%
+ECHO.
+ECHO.= Menu =================================================
+ECHO.
+FOR /f "tokens=1,2,* delims=_ " %%A in ('"findstr /b /c:":menu_" "%~f0""') DO ECHO.  %%B  %%C
+SET choice=
+ECHO. & SET /p choice=Make a choice or hit ENTER to quit: ||GOTO:EOF
+ECHO. & CALL :menu_%choice%
 GOTO:menuLOOP
 
 ::-----------------------------------------------------------

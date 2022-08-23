@@ -1,2 +1,2 @@
 @ECHO OFF
-%~dp0/lib/archive.cmd zip AFI %*
+"%~dp0/lib/archive.cmd" zip AFI %*

@@ -14,11 +14,8 @@ SETLOCAL EnableExtensions DisableDelayedExpansion
 		PAUSE & GOTO :END
 	)
 
-	ECHO Syntax: %~nx0 [File/Folder/Switch]
-	ECHO    [/A : Archive All Files ^& Folders In CD]
-	ECHO    [/F : Archive Individual Folders In CD]
+	ECHO Syntax: %~nx0 [File/Switch]
 	ECHO    [/I : Archive Individual Files In CD]
-	ECHO    [/S : Compress Executable Installer]
 	ECHO    [Default : Archive Single Specific File]
 	ECHO.
 	ECHO Copyright (C) 2017  Brian Baker https://github.com/Fooly-Cooly

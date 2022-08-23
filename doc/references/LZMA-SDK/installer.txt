@@ -1,26 +1,28 @@
-7-Zip for installers 9.20
+7-Zip for installers 9.38
 -------------------------
 
-7-Zip is a file archiver for Windows 98/ME/NT/2000/2003/XP. 
+7-Zip is a file archiver for Windows NT/2000/2003/2008/XP/Vista/7/8/10. 
 
-7-Zip Copyright (C) 1999-2010 Igor Pavlov.
+7-Zip for installers is part of LZMA SDK.
+LZMA SDK is written and placed in the public domain by Igor Pavlov.
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
+It's allowed to join 7-Zip SFX module with another software.
+It's allowed to change resources of 7-Zip's SFX modules.
+
+
+HOW to use
+-----------
 
 7zr.exe is reduced version of 7za.exe of 7-Zip.
-7zr.exe supports only 7z format with this codecs: LZMA, LZMA2, BCJ, BCJ2, ARM, Copy.
+7zr.exe supports only format with these codecs: LZMA, LZMA2, BCJ, BCJ2, ARM, Copy.
 
 Example of compressing command for installation packages:
 
-7zr a -t7z archive.7z * -m0=BCJ2 -m1=LZMA:d25:fb255 -m2=LZMA:d19 -m3=LZMA:d19 -mb0:1 -mb0s1:2 -mb0s2:3 -mx
+7zr a archive.7z files
 
+7zSD.sfx is SFX module for installers. 7zSD.sfx uses msvcrt.dll.
 
-7zSD.sfx is SFX module for installers (it uses msvcrt.dll)
-
-SFX modules for installers (7zS.sfx and 7zSD.sfx) allow to create installation program. 
+SFX modules for installers allow to create installation program. 
 Such module extracts archive to temp folder and then runs specified program and removes 
 temp files after program finishing. Self-extract archive for installers must be created 
 as joining 3 files: SFX_Module, Installer_Config, 7z_Archive. 
@@ -55,7 +57,7 @@ ExecuteFile        Name of file for executing
 ExecuteParameters  Parameters for "ExecuteFile" 
 
 
-You can omit any values.
+You can omit any string pair.
 
 There are two ways to run program: RunProgram and ExecuteFile. 
 Use RunProgram, if you want to run some program from .7z archive. 
@@ -108,7 +110,7 @@ Small SFX modules support this codecs: LZMA, LZMA2, BCJ, BCJ2, ARM, COPY
 
 Small SFX module is similar to common SFX module for installers.
 The difference (what's new in small version):
- - Smaller size (28 KB vs 100 KB)
+ - Smaller size (30 KB vs 100 KB)
  - C source code instead of Ñ++
  - No installer Configuration file
  - No extracting progress window
@@ -133,7 +135,7 @@ Small SFX uses 3 levels of priorities to select file to execute:
 
   1) Files in root folder have higher priority than files in subfolders.
   2) File extension priorities (from high to low priority order): 
-       bat, exe, inf, msi, cab (under Windows CE), html, htm
+       bat, cmd, exe, inf, msi, cab (under Windows CE), html, htm
   3) File name priorities (from high to low priority order): 
        setup, install, run, start
 
@@ -145,20 +147,20 @@ Examples
 
 1) To create compressed console 7-Zip:
 
-7z a c.7z 7z.exe 7z.dll -m0=lzma2 -mx
+7zr a c.7z 7z.exe 7z.dll -mx
 copy /b 7zS2con.sfx + c.7z 7zCompr.exe
 7zCompr.exe b -md22
 
 
 2) To create compressed GUI 7-Zip:
 
-7z a g.7z 7zg.exe 7z.dll -mx
+7zr a g.7z 7zg.exe 7z.dll -mx
 copy /b 7zS2.sfx + g.7z 7zgCompr.exe
 7zgCompr.exe b -md22
 
 
 3) To open some file:
 
-7z a h.7z readme.txt -mx
+7zr a h.7z readme.txt -mx
 copy /b 7zS2.sfx + h.7z 7zTxt.exe 
 7zTxt.exe
