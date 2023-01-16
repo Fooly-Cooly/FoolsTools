@@ -1,0 +1,1 @@
+7z l -slt "%~1" >> "%tmp%\output.txt" && type "%tmp%\output.txt"|findstr /b CRC >>"%~dp1\%~n1.txt" && del /q /f "%tmp%\output.txt"

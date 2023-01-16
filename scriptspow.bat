@@ -1,5 +1,5 @@
 @ECHO OFF
-CALL %~dp0\lib\reqadmin.cmd
+CALL "%~dp0lib\reqadmin.cmd"
 SETLOCAL ENABLEDELAYEDEXPANSION
 TITLE Powershell Scripts
 COLOR 17
