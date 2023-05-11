@@ -1,0 +1,15 @@
+Windows Registry Editor Version 5.00
+
+[-HKEY_CURRENT_USER\Software\Classes\.jpg]
+
+[-HKEY_CURRENT_USER\Software\Classes\.jpeg]
+
+[-HKEY_CURRENT_USER\Software\Classes\.gif]
+
+[-HKEY_CURRENT_USER\Software\Classes\.png]
+
+[-HKEY_CURRENT_USER\Software\Classes\.bmp]
+
+[-HKEY_CURRENT_USER\Software\Classes\.tiff]
+
+[-HKEY_CURRENT_USER\Software\Classes\.ico]

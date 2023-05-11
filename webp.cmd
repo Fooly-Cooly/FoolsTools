@@ -24,7 +24,7 @@ GOTO :EOF
 		ECHO    [/A : Convert All Files of CD]
 		ECHO    [/R : Convert All Files in CD/Sub]
 		ECHO    [-r : Recycle Original Files]
-		ECHO Supported Extensions: PNG ^& BMP
+		ECHO Supported Extensions: BMP, GIF ^& PNG
 		ECHO.
 		ECHO Copyright (C) 2023  Brian Baker https://github.com/Fooly-Cooly
 		ECHO Licensed with GPL v3 https://www.gnu.org/licenses/gpl-3.0.txt
@@ -45,9 +45,13 @@ GOTO :EOF
 		IF NOT EXIST "%~1" ( CALL :LOG "%~f1" "ERROR: 404 File Not Found, Skipping..." & GOTO :PROCESS_END )
 		IF EXIST "%~dpn1.webp" ( CALL :LOG "%~f1" "ERROR: 422 File Already Exists, Skipping..." & GOTO :PROCESS_END )
 
-		IF "%~x1" == ".png" ( SET "META=-metadata all" ) ELSE ( SET "META=" )
 		RENAME "%~f1" "tmp%~x1"
-		START "cwebp" /W /B "%~dp0bin\webp%ARC%\cwebp.exe" "%~dp1tmp%~x1" -lossless -m 4 %META% -mt -progress -q 100 -o "%~dp1tmp.webp"
+		IF "%~x1" == ".bmp" ( SET "META=" ) ELSE ( SET "META=-metadata all" )
+		IF "%~x1" == ".gif" (
+			START "gif2webp" /W /B "%~dp0bin\webp%ARC%\gif2webp.exe" -m 6 "%~dp1tmp%~x1" %META% -mt -o "%~dp1tmp.webp"
+		) ELSE (
+			START "cwebp" /W /B "%~dp0bin\webp%ARC%\cwebp.exe" "%~dp1tmp%~x1" -lossless -m 4 %META% -mt -progress -q 100 -o "%~dp1tmp.webp"
+		)
 		RENAME "%~dp1tmp%~x1" "%~nx1"
 		RENAME "%~dp1tmp.webp" "%~n1.webp"
 
@@ -66,9 +70,9 @@ GOTO :EOF
 	GOTO :EOF
 
 	:A
-		FOR %%A IN ("*.png", "*.bmp") DO CALL :PROCESS "%%A"
+		FOR %%A IN ("*.png", "*.bmp", "*.gif") DO CALL :PROCESS "%%A"
 	GOTO :EOF
 
 	:R
-		FOR /R %%A IN ("*.png", "*.bmp") DO CALL :PROCESS "%%A"
+		FOR /R %%A IN ("*.png", "*.bmp", "*.gif") DO CALL :PROCESS "%%A"
 	GOTO :EOF
